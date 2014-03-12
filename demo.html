@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+       
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Demo Imagecover jQuery Plugin</title>
+        <meta name="viewport" content="width=device-width">
+        <meta name="author" content="Andrea Dell'Orco">
+
+        <link rel="stylesheet" href="style.css">
+        <script src="js/vendor/modernizr.js"></script>
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>');</script>        
+
+
+    
+        
+        <script src="js/imagesloaded.min.js"></script>
+        <script src="js/jquery.imagecover.js"></script>
+       <script>
+       	$(document).ready(function(){
+       		$('.cover').imagecover();
+       		$('.cover-nocss3').imagecover({css2:true});
+       		
+       		$('.cover-animated').imagecover({
+       			css2:true,
+       			throttle:1000/60
+       		});
+       		
+       		animateBox(0);
+
+       	});
+       	
+       	function animateBox(status){
+       		if(status==1){
+       			status=0;
+       			$('.cover-animated').animate({'width':500,'height':200},1000,function(){animateBox(status)});
+       		}
+       		else{
+       			status=1;
+       			$('.cover-animated').animate({'width':200,'height':500},1000,function(){animateBox(status)});
+       		}
+       		
+       	}
+       </script>
+        
+    </head>
+    <body>
+    	<div class="container">
+    	<h1>Imagecover jQuery Plugin</h1>
+    	<div>
+    		<p>Original Image:<br><img src="img/monkey.jpg"></p><br><br>
+    		<p><strong>Html Markup: </strong></p><code> &lt;div class="containerClass"&gt;<br>&nbsp;&nbsp;&lt;img src="img/monkey.jpg"&gt;<br>&lt;/div&gt;</code>
+    		<p><strong>Use: </strong></p><code> $('.containerClass').imagecover();</code>
+    		<p><strong>Advanced Use: </strong></p><code>$('.containerClass').imagecover({<br>
+    			&nbsp;&nbsp;useOnce:false, //if true, he doesn't monitor the conges of the container<br>
+    			&nbsp;&nbsp;css2:false,	//if true, he force css2 fallback and he ignore css3 features<br>
+    			&nbsp;&nbsp;throttle:200 //interval time to check container changes<br>
+    		});</code>
+    		
+    		<p><strong>Requires: </strong> imagesLoaded.js - <a href="https://github.com/desandro/imagesloaded">https://github.com/desandro/imagesloaded</a></p>
+    		<p><strong>Raccomanded (to enable css3 feature): </strong> modernizr.js - <a href="http://modernizr.com/">http://modernizr.com/</a></p>
+    	</div>
+    	
+    	<div>
+    		<h2>Demo 1</h2>
+    		<div>
+    			<p>Without plugin:</p>
+    			<div class="box"  style="width:350px; height:100px">
+    				<img src="img/monkey.jpg">
+    			</div>
+    			
+    			<p>With imagecover plugin:</p>
+    			<div class="box cover" style="width:350px; height:100px">
+    				<img src="img/monkey.jpg">
+    			</div>
+    			
+    		</div>
+    	</div>
+    	<hr>
+    	
+    	
+    	<div>
+    		<h2>Demo 2</h2>
+    		<div>
+    			<p>Without plugin:</p>
+    			<div class="box"  style="width:100px; height:300px">
+    				<img src="img/monkey.jpg">
+    			</div>
+    			
+    			<p>With imagecover plugin:</p>
+    			<div class="box cover" style="width:100px; height:300px">
+    				<img src="img/monkey.jpg">
+    			</div>
+    			
+    		</div>
+    	</div>
+    	<hr>
+    	
+    	
+    	<div>
+    		<h2>Demo 3</h2>
+    		<div>
+    			
+    			<p>Without plugin:</p>
+    			<div class="box"  style="width:500px; height:200px">
+    				<img src="img/monkey.jpg">
+    			</div>
+    			
+    			<p>With imagecover plugin:</p>
+    			<div class="box cover" style="width:500px; height:200px">
+    				<img src="img/monkey.jpg">
+    			</div>
+    		
+    		</div>
+    	</div>
+    	<hr>
+    	
+    	<div>
+    		<h2>Demo Responsive</h2>
+    		<div>
+    			<p>Without plugin:</p>
+    			<div class="box"  style="width:90%; height:200px">
+    				<img src="img/monkey.jpg">
+    			</div>
+    			
+    			<p>With imagecover plugin</p>
+    			<div class="box cover" style="width:90%; height:200px">
+    				<img src="img/monkey.jpg">
+    			</div>
+    		
+    		</div>
+    	</div>
+    	<hr>
+    	
+    	<div>
+    		<h2>Demo Responsive( Force NO CSS3)</h2>
+    		<div>
+    			<p>Force js fallback for IE... yes... only IE </p>
+    			<div class="box cover-nocss3" style="width:90%; height:200px">
+    				<img src="img/monkey.jpg">
+    			</div>
+
+    		</div>
+    	</div>
+    	<hr>
+    	
+    	<div>
+    		<h2>Demo Animated (Force NO CSS3)</h2>
+    		<div style="height:700px">
+    			<p>I forced js fallback with a container animated. <br>
+    				<strong>I set 60 fps. He need a lot of memory, keep calm  and don't abuse.</strong></p>
+    				<code>$('.cover-animated').imagecover({<br>
+    					throttle:1000/60<br>
+    				});</code>
+    		
+    			<div class="box  cover-animated" style="width:500; height:200px">
+    				<img src="img/monkey.jpg">
+    			</div>
+
+    		</div>
+    	</div>
+    	
+    	
+    	<div>
+    		<h2>Demo Different Containers/images (Force NO CSS3)</h2>
+    		<div style="height:700px">
+ 
+    			<div class="box-2  cover-nocss3" style="width:100px; height:150px">
+    				<img src="img/monkey.jpg">
+    			</div>
+    			<div class="box-2  cover-nocss3" style="width:180px; height:110px">
+    				<img src="img/dog.jpg">
+    			</div>
+    			<div class="box-2  cover-nocss3" style="width:280px; height:110px">
+    				<img src="img/cat.png">
+    			</div>
+    			<div class="box-2  cover-nocss3" style="width:180px; height:230px">
+    				<img src="img/dog.jpg">
+    			</div>
+    			<div class="box-2  cover-nocss3" style="width:280px; height:310px">
+    				<img src="img/cat.png">
+    			</div>
+
+    		</div>
+    	</div>
+    	<hr>
+    	</div>
+    </body>
+</html>
