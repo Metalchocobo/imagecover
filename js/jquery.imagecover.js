@@ -5,7 +5,6 @@
  * ispirated by johnpolacek / imagefill.js plugin
  * MIT license
  *
- * The jQuery plugin for making images fill their containers (and be centered)
  *
  * REQUIRES:
  * imagesLoaded - https://github.com/desandro/imagesloaded
@@ -18,13 +17,13 @@
   $.fn.imagecover = function(options) {
   		
   	    var $container = this,
-        $img		= 	$container.find('>img').first().addClass('ic-loading').css({'position':'absolute'}),
-	    defaults	= 	{
-				    	runOnce	: false,
-				    	throttle: 200 , // 5fps
-				    	css2	: false,
-						},
-        settings 	= 	$.extend({}, defaults, options);
+  	    $img = $container.find('>img').first().addClass('ic-loading').css({'position':'absolute'}),
+	    defaults =  {
+	    	runOnce	: false,
+	    	throttle: 200 , // 5fps
+	    	css2	: false
+	    	},
+        settings =  $.extend({}, defaults, options);
 
 
         // -------------------------- inizializzo la procedura  -------------------------- //
@@ -77,12 +76,12 @@
         	
         	$containerToCover.each(function(){
         		
-        		var $thisContainer	=	$(this),
-        		containerW 			= 	$thisContainer.width(),
-        		containerH 			= 	$thisContainer.height(),
-        		imgRatio			=	$thisContainer.data('ic-imgRatio'),
-        		containerRatio 		= 	containerW/containerH,
-        		$img				= 	$thisContainer.find('>img').first();
+        		var $thisContainer = $(this),
+        		containerW = $thisContainer.width(),
+        		containerH = $thisContainer.height(),
+        		imgRatio =	$thisContainer.data('ic-imgRatio'),
+        		containerRatio = containerW/containerH,
+        		$img = $thisContainer.find('>img').first();
 				
 				//vuol dire che non ho ancora finito il preloading
 		        if(imgRatio==undefined||!imgRatio) return false;
@@ -90,18 +89,18 @@
 		        if (containerRatio < imgRatio) {
 		          //va alzata
 		          $img.css({
-		              width	: 'auto',
-		              height: containerH,
-		              top	: 0,
-		              left	: -(containerH*imgRatio-containerW)/2
+		              width : 'auto',
+		              height : containerH,
+		              top : 0,
+		              left : -(containerH*imgRatio-containerW)/2
 		            });
 				} else {
 		          //va allargata
 		          $img.css({
-		              width	: containerW,
-		              height: 'auto',
-		              top	: -(containerW/imgRatio-containerH)/2,
-		              left	: 0
+		              width : containerW,
+		              height : 'auto',
+		              top : -(containerW/imgRatio-containerH)/2,
+		              left : 0
 		            });
 		        }
         		
@@ -117,10 +116,10 @@
         		$img=$thisContainer.find('>img').first();
         
 	        	$thisContainer.css({
-	        		'background-repeat'		:'no-repeat',
-	        		'background-position'	:'center',
-	        		'background-size'		:'cover',
-	        		'background-image'		:'url('+$img.attr('src')+')'
+	        		'background-repeat':'no-repeat',
+	        		'background-position':'center',
+	        		'background-size':'cover',
+	        		'background-image':'url('+$img.attr('src')+')'
 	        	});
 	        	$img.remove();
         	});
