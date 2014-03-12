@@ -1,2 +1,2 @@
-imagecover
+Imagecover jQuery Plugin
 ==========
