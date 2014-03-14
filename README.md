@@ -67,7 +67,7 @@ In this [demo] (http://dev.adostudio.it/jquery/imagecover/demo-background-loadin
 	}
 ```
 
-PS: Remember, the preloader elment is defined by `addPreload` option. Read options sections for details.
+PS: Remember, the preloader elment is defined by `addPreload` option. Read options section for details.
 
 ##Browser Support
 IE8+ and all modern browsers. 
