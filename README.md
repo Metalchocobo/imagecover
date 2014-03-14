@@ -18,7 +18,7 @@ Imagecover is a jQuery plugin that allows an image to cover all its container.
 + Include (Required) [jquery.imagecover.js](http://dev.adostudio.it/jquery/imagecover/js/jquery.imagecover.js)
 + Include (Raccomanded) [modernizr.js](http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.dev.js) -  [Modernizr](http://modernizr.com/)
 
-Modernizr enables the brwoser to use CSS3 features (if they are supported).
+Modernizr enables the browser to use CSS3 features (if they are supported).
 
 Of course remember to include jquery... imagecover.js is a jQuery plugin.
 
