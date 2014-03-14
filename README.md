@@ -56,7 +56,7 @@ $('.containerClass').imagecover({
 ##CSS and Style
 This plugin doesn't require to include any file .css, but if you want to style elements like class _ic-loading_ or _preloader element_ appended to the container, you'll have to do it yourself.
 
-In this [demo] (http://dev.adostudio.it/jquery/imagecover/demo-background-loading.html) the _.preloader_ selector had this class:
+In this [demo] (http://dev.adostudio.it/jquery/imagecover/demo-background-loading.html) the _.preloader_ selector has this class:
 ``` js
 .preloader{
 	background:white url(img/loading.gif) center center no-repeat;
