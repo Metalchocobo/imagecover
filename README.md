@@ -50,7 +50,7 @@ $('.containerClass').imagecover({
 });
 ```
 
-+ `addPreload` _false_ / _true_ / _css-class_ : If is specified a _css-class_ (don't use . [dot] ), will be append an element _preloader_ with this class to the containers while images are loading. If is set _true_ the default class is _ic-preloader_.
++ `addPreload` _false_ / _true_ / _css-class_ : If it is specified a _css-class_ (don't use . [dot] ), will be append an element _preloader_ with this class to the containers while images are loading. If it is set _true_ the default class is _ic-preloader_.
 + `loadingClass` _css-class_ : Class applied to the containers while loading the image/s.
 + `preloadAllImages` _false_ / _true_ : Wait the loading of all images in the containers to cover itself with the image  and to remove _ladingClass_ and _preloader element_ (maybe  the container sizes depend from inner images). If it's set _false_ (default) he preloads only the image used to cover the container.
 + `css2` _false_ / _true_ : If it's  _true_ avoid CSS3 features and force to use CSS2 procedure (used for old browsers). 
