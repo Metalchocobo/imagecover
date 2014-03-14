@@ -17,34 +17,39 @@
   $.fn.imagecover = function(options) {
   		
   	    var $container = this,
-  	    $img = $container.find('>img').first().addClass('ic-loading').css({'position':'absolute'}),
 	    defaults =  {
 	    	runOnce	: false,
-	    	throttle: 200 , // 5fps
-	    	css2	: false
+	    	throttle: 200 , 
+	    	css2	: false,
+	    	preloadAllImages:false,
+	    	loadingClass: 'ic-loading',
+	    	addPreload: false
 	    	},
         settings =  $.extend({}, defaults, options);
-
 
         // -------------------------- inizializzo la procedura  -------------------------- //
         var __prepareCoverImage=function(){
         	  $container.each(function(){
-
-	        	var $thisContainer=$(this),
-	        	$img=$thisContainer.find('>img').first().addClass('loading').css({'position':'absolute'}),
+				var $thisContainer=$(this),
+	        	$img=$thisContainer.find('>img').first().css({'position':'absolute'}),
 	        	containerPos = $thisContainer.css('position');;
-
+				
 	    	     $thisContainer.css({'overflow':'hidden','position':(containerPos === 'static') ? 'relative' : containerPos});
+	    	     //aggiungo loading
+	    	     __addLoading($thisContainer);
 	    	     
-	    	     //attendo caricamento di tutte le immagini all'interno del div 
+	    	     var $preloadItem=settings.preloadAllImages?$thisContainer:$img;
+	    	     
+	    	     //se impostato, attendo caricamento di tutte le immagini all'interno del div 
 	    	     //per essere sicuro che le dimensioni non varino una volta che queste sono state caricate.
-			     $thisContainer.imagesLoaded().done(function(img) {
+	    	     //altrimenti attendo il caricamento solo dela mia
+			     $preloadItem.imagesLoaded().done(function(img) {
 			     	
 			     	var thisImgRatio;
 			     	
 			     	$thisContainer.data('ic-height',$thisContainer.height());
 			     	$thisContainer.data('ic-width',$thisContainer.width());
-			     	
+		
 			     	//può succedere che a causa di latenza, l'immagine è caricata ma non riesco a 
 			     	//stabilirne ancora le dimensioni all'interno del dom, allora inizio la ricorsivtà di controllo
 		      		if( $img.width()== 0 && $img.height()==0) 
@@ -57,7 +62,7 @@
 			        if(thisImgRatio==false)	
 			       	 	__delegateCover($thisContainer);
 				    else{
-				    	$img.removeClass('ic-loading');
+				    	__removeLoading($thisContainer);
 				    	__coverImage($thisContainer);
 				    }
 			     	
@@ -68,6 +73,22 @@
 	        //controllo periodico sulle dimensioni dei container
 	        if(!settings.runOnce)
 	        	window.setInterval(function(){__checkSizeChange()},settings.throttle);
+        };
+        
+        // --------------------------Loading  -------------------------- //
+        var __addLoading=function($thisContainer){
+        	$thisContainer.addClass(settings.loadingClass);
+        	if(settings.addPreload){
+        		var preloaderClass=settings.addPreload!==true?settings.addPreload:'ic-preloader';
+        		$thisContainer.prepend('<div class="'+preloaderClass+'" style="position:absolute; left:0; right:0; bottom:0; top:0; z-index:999999;"></div>');
+        	}
+        };
+        var __removeLoading=function($thisContainer){
+        	$thisContainer.removeClass(settings.loadingClass);
+        	if(settings.addPreload){
+        		var preloaderClass=settings.addPreload!==true?settings.addPreload:'ic-preloader';
+        		$thisContainer.find('.'+preloaderClass).fadeOut(function(){$(this).remove();});
+        	}
         };
         
         // -------------------------- manipolo l'immagine  -------------------------- //
@@ -103,8 +124,7 @@
 		              left : 0
 		            });
 		        }
-        		
-        		
+
         	});
         	
         };
@@ -115,6 +135,12 @@
         		var $thisContainer=$(this),
         		$img=$thisContainer.find('>img').first();
         
+        		var $preloadItem=settings.preloadAllImages?$thisContainer:$img;  
+        		 __addLoading($thisContainer);
+			     $preloadItem.imagesLoaded().done(function(img) {
+			     	__removeLoading($thisContainer);
+			     });
+        		
 	        	$thisContainer.css({
 	        		'background-repeat':'no-repeat',
 	        		'background-position':'center',
@@ -140,7 +166,7 @@
 	      			if(!thisImgRatio) 
 	      				__delegateCover($dContainer);
 					else { 
-						$img.removeClass('ic-loading');
+						__removeLoading($thisContainer);
 						__coverImage($dContainer);
 					}
 					return true;

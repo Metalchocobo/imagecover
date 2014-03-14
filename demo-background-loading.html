@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+       
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Demo Imagecover jQuery Plugin / Background</title>
+        <meta name="viewport" content="width=device-width">
+        <meta name="author" content="Andrea Dell'Orco">
+
+        <link rel="stylesheet" href="style.css">
+        <script src="js/vendor/modernizr.js"></script>
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>');</script>        
+
+
+    
+        
+        <script src="js/imagesloaded.min.js"></script>
+        <script src="js/jquery.imagecover.js"></script>
+       <script>
+       	$(document).ready(function(){
+       		$('.cover').imagecover({
+       			addPreload:'preloader'
+       		});
+       	});
+
+       </script>
+        
+    </head>
+    <body>
+    	<div class="wrapper cover">
+	    	<img src="http://p1.pichost.me/i/40/1638833.jpg">
+	    	<div class="container" style="z-index: 2;">
+		    	<h1>Imagecover jQuery Plugin for background</h1>
+		    	<p>I applied plugin to ".wrapper" for a background full screen effect.</p>
+		    	<p>addPreload option is set.</p>
+	    	</div>
+		</div> 
+    </body>
+</html>
