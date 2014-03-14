@@ -52,3 +52,6 @@ $('.containerClass').imagecover({
 + `css2` _false_ / _true_ : If _true_ avoid CSS3 features and force to use CSS2 procedure (used for old browsers). 
 + `runOnce` _false_ / _true_: If _true_ don't monitor costantly the changes of the conatainers and use plugin in "oneshot" mode. If browser supports CSS3 (and `css2` is not set) this options is ignored.
 + `throttle` 200 / _integer_ : Elapsed time in ms between checks the variation of the containers. (Used for `css2` and old Browser). If browser supports CSS3 (and `css2` is not set) this options is ignored.
+
+##Browser Support
+IE8+ and all modern browsers. 
