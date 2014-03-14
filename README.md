@@ -12,7 +12,7 @@ Imagecover is a jQuery plugin that allows an image to cover all its container.
 
 ## Install
 
-+ Include [imagesloaded.pkgd.min.js](http://imagesloaded.desandro.com/imagesloaded.pkgd.min.js) | [Imagesloaded Plugin](https://github.com/desandro/imagesloaded)
++ Include [imagesloaded.pkgd.min.js](http://imagesloaded.desandro.com/imagesloaded.pkgd.min.js) - [Imagesloaded Plugin](https://github.com/desandro/imagesloaded)
 + Include [jquery.imagecover.js](http://dev.adostudio.it/jquery/imagecover/js/jquery.imagecover.js)
 
 ## Usage
