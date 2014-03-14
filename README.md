@@ -9,6 +9,7 @@ Imagecover is a jQuery plugin that allows an image to cover all its container.
 + Regular Usage: (http://dev.adostudio.it/jquery/imagecover/demo.html)
 + Background Fullscreen: (http://dev.adostudio.it/jquery/imagecover/demo-background.html)
 + Background Fullscreen (with preloader): (http://dev.adostudio.it/jquery/imagecover/demo-background-loading.html)
+
 * * *
 
 ## Install
