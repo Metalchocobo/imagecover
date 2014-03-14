@@ -53,5 +53,17 @@ $('.containerClass').imagecover({
 + `runOnce` _false_ / _true_: If _true_ don't monitor costantly the changes of the conatainers and use plugin in "oneshot" mode. If browser supports CSS3 (and `css2` is not set) this options is ignored.
 + `throttle` 200 / _integer_ : Elapsed time in ms between checks the variation of the containers. (Used for `css2` and old Browser). If browser supports CSS3 (and `css2` is not set) this options is ignored.
 
+##CSS and Style
+This plugin doesn't require to include any file .css, but if you want to style elements like class _ic-loading_ or _preloader element_ appended to the container, you'll have to do it yourself.
+
+In this [demo] (http://dev.adostudio.it/jquery/imagecover/demo-background-loading.html) the _.preloader_ selector had this class:
+``` js
+.preloader{
+	background:white url(img/loading.gif) center center no-repeat;
+	}
+```
+
+PS: Remember, the preloader elment is defined by `addPreload` option. Read options sections for details.
+
 ##Browser Support
 IE8+ and all modern browsers. 
