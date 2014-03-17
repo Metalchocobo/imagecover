@@ -12,196 +12,191 @@
  *
  */
 
-;(function($) {
+(function($) {
 
-  $.fn.imagecover = function(options) {
-  		
-  	    var $container = this,
-	    defaults =  {
-	    	runOnce	: false,
-	    	throttle: 200 , 
-	    	css2	: false,
-	    	preloadAllImages:false,
-	    	loadingClass: 'ic-loading',
-	    	addPreload: false
-	    	},
-        settings =  $.extend({}, defaults, options);
+    $.fn.imagecover = function(options) {
+    
+        var $container  = this,
+            defaults    =  {
+                throttle        : 200, 
+                runOnce         : false,
+                css2            : false,
+                preloadAllImages: false,
+                addPreload      : false,
+                loadingClass    : 'ic-loading'
+            },
+            settings = $.extend({}, defaults, options);
 
-        // -------------------------- inizializzo la procedura  -------------------------- //
-        var __prepareCoverImage=function(){
-        	  $container.each(function(){
-				var $thisContainer=$(this),
-	        	$img=$thisContainer.find('>img').first().css({'position':'absolute'}),
-	        	containerPos = $thisContainer.css('position');;
-				
-	    	     $thisContainer.css({'overflow':'hidden','position':(containerPos === 'static') ? 'relative' : containerPos});
-	    	     //aggiungo loading
-	    	     __addLoading($thisContainer);
-	    	     
-	    	     var $preloadItem=settings.preloadAllImages?$thisContainer:$img;
-	    	     
-	    	     //se impostato, attendo caricamento di tutte le immagini all'interno del div 
-	    	     //per essere sicuro che le dimensioni non varino una volta che queste sono state caricate.
-	    	     //altrimenti attendo il caricamento solo dela mia
-			     $preloadItem.imagesLoaded().done(function(img) {
-			     	
-			     	var thisImgRatio;
-			     	
-			     	$thisContainer.data('ic-height',$thisContainer.height());
-			     	$thisContainer.data('ic-width',$thisContainer.width());
-		
-			     	//può succedere che a causa di latenza, l'immagine è caricata ma non riesco a 
-			     	//stabilirne ancora le dimensioni all'interno del dom, allora inizio la ricorsivtà di controllo
-		      		if( $img.width()== 0 && $img.height()==0) 
-		      			thisImgRatio= false;
-		      		else 
-		      			thisImgRatio=$img.width()/$img.height();
-		      		
-		      		$thisContainer.data('ic-imgRatio', thisImgRatio);
-			        
-			        if(thisImgRatio==false)	
-			       	 	__delegateCover($thisContainer);
-				    else{
-				    	__removeLoading($thisContainer);
-				    	__coverImage($thisContainer);
-				    }
-			     	
-			     });
-	        	
-	        });
-	        
-	        //controllo periodico sulle dimensioni dei container
-	        if(!settings.runOnce)
-	        	window.setInterval(function(){__checkSizeChange()},settings.throttle);
-        };
-        
-        // --------------------------Loading  -------------------------- //
-        var __addLoading=function($thisContainer){
-        	$thisContainer.addClass(settings.loadingClass);
-        	if(settings.addPreload){
-        		var preloaderClass=settings.addPreload!==true?settings.addPreload:'ic-preloader';
-        		$thisContainer.prepend('<div class="'+preloaderClass+'" style="position:absolute; left:0; right:0; bottom:0; top:0; z-index:999999;"></div>');
-        	}
-        };
-        var __removeLoading=function($thisContainer){
-        	$thisContainer.removeClass(settings.loadingClass);
-        	if(settings.addPreload){
-        		var preloaderClass=settings.addPreload!==true?settings.addPreload:'ic-preloader';
-        		$thisContainer.find('.'+preloaderClass).fadeOut(function(){$(this).remove();});
-        	}
-        };
-        
-        // -------------------------- manipolo l'immagine  -------------------------- //
-        var __coverImage=function($containerForced){
-        	var $containerToCover=($containerForced?$containerForced:$container);
-        	
-        	$containerToCover.each(function(){
-        		
-        		var $thisContainer = $(this),
-        		containerW = $thisContainer.width(),
-        		containerH = $thisContainer.height(),
-        		imgRatio =	$thisContainer.data('ic-imgRatio'),
-        		containerRatio = containerW/containerH,
-        		$img = $thisContainer.find('>img').first();
-				
-				//vuol dire che non ho ancora finito il preloading
-		        if(imgRatio==undefined||!imgRatio) return false;
+        var prepareCoverImage = function() {
+            
+            $container.each(function() {
+                var $single      = $(this),
+                    $img         = $single.find('>img').first().css({'position':'absolute'}),
+                    containerPos = $single.css('position');
+                
+                $single.css({
+                    'overflow':'hidden',
+                    'position': (containerPos === 'static') ? 'relative' : containerPos
+                });
 
-		        if (containerRatio < imgRatio) {
-		          //va alzata
-		          $img.css({
-		              width : 'auto',
-		              height : containerH,
-		              top : 0,
-		              left : -(containerH*imgRatio-containerW)/2
-		            });
-				} else {
-		          //va allargata
-		          $img.css({
-		              width : containerW,
-		              height : 'auto',
-		              top : -(containerW/imgRatio-containerH)/2,
-		              left : 0
-		            });
-		        }
+                toggleLoading.call(this);
+                 
+                var $preloadItem = (settings.preloadAllImages) ? $(this) : $img;
+                 
+                $preloadItem.imagesLoaded().done(function (img) {
+                    
+                    var imgRatio;
+                    
+                    $single.data('ic-height',$single.height());
+                    $single.data('ic-width', $single.width());
 
-        	});
-        	
-        };
-        
-         // -------------------------- applico struttura css3  -------------------------- //
-        var __coverImageCss3=function(){
-        	$container.each(function(){
-        		var $thisContainer=$(this),
-        		$img=$thisContainer.find('>img').first();
-        
-        		var $preloadItem=settings.preloadAllImages?$thisContainer:$img;  
-        		 __addLoading($thisContainer);
-			     $preloadItem.imagesLoaded().done(function(img) {
-			     	__removeLoading($thisContainer);
-			     });
-        		
-	        	$thisContainer.css({
-	        		'background-repeat':'no-repeat',
-	        		'background-position':'center',
-	        		'background-size':'cover',
-	        		'background-image':'url('+$img.attr('src')+')'
-	        	});
-	        	$img.remove();
-        	});
-        };
-        
-        // -------------------------- controllo quando l'immagina ha finito di caricarsi realmente  -------------------------- //
-        var __delegateCover=function($dContainer){
-        	window.setTimeout(function(){
+                    var width   = $img.width(),
+                        height  = $img.height();
 
-					var $img = $dContainer.find('>img').first(),
-					thisImgRatio;
-					
-					if( $img.width()== 0 && $img.height()==0) thisImgRatio= false;
-	      			else thisImgRatio=$img.width()/$img.height();
-	      			
-	      			$dContainer.data('ic-imgRatio', thisImgRatio);
-	      			
-	      			if(!thisImgRatio) 
-	      				__delegateCover($dContainer);
-					else { 
-						__removeLoading($thisContainer);
-						__coverImage($dContainer);
-					}
-					return true;
-					
-			},settings.throttle);
+                    imgRatio = (!width && !height) ? false : $img.width() / $img.height();
+                    
+                    $single.data('ic-imgRatio', imgRatio);
+                    
+                    if (!imgRatio) {
+                        delegateCover.call(this);
+                    } else {
+                        toggleLoading.call(this);
+                        coverImage.call(this);
+                    }
+                });
+                
+            });
+            
+            if (!settings.runOnce)
+                window.setInterval(function() {
+                    checkSizeChange()
+                }, settings.throttle);
         };
         
-       // -------------------------- controllo se le dimensioni sono variate  -------------------------- //
-        var __checkSizeChange=function(){
-        	
-        	  $container.each(function() {
-        	  	
-        	  	var $thisContainer=$(this),
-		        checkH = $thisContainer.height();
-		        checkW = $thisContainer.width();
-		        		    
-			      if (($thisContainer.data('ic-height')!== checkH || $thisContainer.data('ic-height') !== checkW )) {
-			      	$thisContainer.data('ic-height',checkH);
-			      	$thisContainer.data('ic-height',checkW);
-			       __coverImage($thisContainer);
-			      }
-			      
-		      });
+
+        var toggleLoading = function() {
+            var loaded = $(this).hasClass(settings.loadingClass);
+
+            if (loaded) {
+                $(this).removeClass(settings.loadingClass);             
+            } else {
+                $(this).addClass(settings.loadingClass);                
+            }
+
+            if (settings.addPreload) {
+                var preloaderClass = (!settings.addPreload) ? settings.addPreload : 'ic-preloader';
+
+                if (loaded) {
+                    var html = '<div class="' + preloaderClass + '" style="position:absolute; left:0; right:0; bottom:0; top:0; z-index:999999;"></div>';
+                    $(this).prepend(html);
+                } else {
+                    $(this).find('.' + preloaderClass).fadeOut(function() {
+                        $(this).remove();
+                    });
+                }
+            }
+        };
+
+        
+        var coverImage = function(forced) {
+
+            var $containerToCover = (forced) ? forced : $container;
+            
+            $containerToCover.each(function() {
+                
+                var $single = $(this),
+                    $img    = $single.find('>img').first();
+                    width   = $single.width(),
+                    height  = $single.height(),
+                    iRatio  = $single.data('ic-imgRatio'),
+                    cRatio  = width / height;
+                
+                if (typeof iRatio === "undefined" || !iRatio) 
+                    return false;
+
+                if (cRatio < iRatio) {
+                    $img.css({
+                        width: 'auto',
+                        height: height,
+                        top: 0,
+                        left: -((height * iRatio) - width) / 2
+                    });
+                } else {
+                    $img.css({
+                        width: width,
+                        height: 'auto',
+                        top: -((width / iRatio) - height) / 2,
+                        left: 0
+                    });
+                }
+            });
+        };
+        
+        var coverImageCss3 = function() {
+            $container.each(function() {
+                var $single = $(this),
+                    $img    = $single.find('>img').first();
+        
+                var $preloadItem = (settings.preloadAllImages) ? $single : $img;
+
+                toggleLoading.call(this);
+                
+                $preloadItem.imagesLoaded().done(function (img) {
+                    toggleLoading.call(this);
+                });
+                
+                $single.css({
+                    'background-repeat':'no-repeat',
+                    'background-position':'center',
+                    'background-size':'cover',
+                    'background-image':'url(' + $img.attr('src') + ')'
+                });
+
+                $img.remove();
+            });
+        };
+        
+        var delegateCover = function() {
+            var $single = $(this);
+
+            window.setTimeout(function(){
+                var $img = $single.find('>img').first();
+                
+                imgRatio = (!width && !height) ? false : $img.width() / $img.height();
+                    
+                $single.data('ic-imgRatio', imgRatio);
+
+                if (!imgRatio) {
+                    delegateCover.call(this);
+                } else {
+                    toggleLoading.call(this);
+                    coverImage.call(this);
+                }
+            }, settings.throttle);
+        };
+        
+        var checkSizeChange = function() {      
+            $container.each(function() {
+                var $single = $(this),
+                    height  = $single.height(),
+                    width   = $single.width();
+                            
+                if (($single.data('ic-height') !== height || $single.data('ic-height') !== width)) {
+                    $single.data('ic-height', height);
+                    $single.data('ic-height', width);
+
+                    coverImage($single);
+                }
+            });
         };
         
         
-        //se posso usare css3, uso css3, altrimenti avvio procedura js
-        if (!Modernizr.backgroundsize||settings.css2) 
-        	__prepareCoverImage();
-       	else 
-       		__coverImageCss3();
+        if (!Modernizr.backgroundsize || settings.css2) 
+            prepareCoverImage();
+        else 
+            coverImageCss3();
         
         return this;
-        
-
   };
 
-}(jQuery));
+})(jQuery);
